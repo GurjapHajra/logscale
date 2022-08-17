@@ -1,7 +1,7 @@
 import React from 'react'
 import "./Presets.css"
 import {useDispatch } from 'react-redux'
-import { change } from "../dataSlice"
+import { change, change_title} from "../dataSlice"
 
 const Presets = () => {
 
@@ -74,9 +74,15 @@ const Presets = () => {
     <div className='Presets'>
         <h2>Presets: </h2>
         <button id = "main3"
-                onClick={() => dispatch(change(preset1))}>Naruto vs Goku vs Saitama</button>
+                onClick={() => {
+                  dispatch(change(preset1));
+                  dispatch(change_title("Naruto vs Goku vs Saitama"))
+                  }}>Naruto vs Goku vs Saitama</button>
         <button id = "dbz"
-                onClick={() => dispatch(change(preset2))}>Dragon Ball</button>
+                onClick={() => {
+                  dispatch(change(preset2))
+                  dispatch(change_title("Dragon Ball"))
+                  }}>Dragon Ball</button>
     </div>
   )
 }

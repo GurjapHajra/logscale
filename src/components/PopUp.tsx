@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "./PopUp.css"
 import {useDispatch } from 'react-redux'
-import { change } from "../dataSlice"
+import { change, change_title} from "../dataSlice"
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { arraysToObject, objectToArray } from '../method'
 import type { RootState } from '../store'
@@ -17,12 +17,15 @@ const PopUp = (props: any) => {
   const queryClient = useQueryClient();
 
   const arrays = useSelector((state:RootState) => state.data.arrays);
+  const savedtitle = useSelector((state:RootState) => state.data.title);
 
   const[id,setid] = useState("");
   const [savedID, setSavedID] = useState("");
   const [posted,setposted] = useState(false);
   const[isloading,setloading] = useState(false);
   
+  //load to a server
+
   async function fetcharays(){
     const res = await fetch(`https://log-scale-api.herokuapp.com/LogScale/${id}`);
     return res.json();
@@ -32,8 +35,6 @@ const PopUp = (props: any) => {
   })
 
   if(props.mode === "load"){
-
-    
 
     const handleLoad = () => {
       refetch();
@@ -51,6 +52,7 @@ const PopUp = (props: any) => {
         arraysToObject(data[0]["names"],data[0]["values"],data[0]["links"])
   
         dispatch(change(arraysToObject(data[0]["names"],data[0]["values"],data[0]["links"])))
+        dispatch(change_title(data[0]["title"]))
         props.clickHandle();
       }
     }
@@ -78,7 +80,7 @@ const PopUp = (props: any) => {
 
     if(!posted){
       axios.post("https://log-scale-api.herokuapp.com/LogScale",{
-        "title": "let's gooo",
+        "title": savedtitle,
         "names": send[0],
         "values": send[1],
         "links": send[2]

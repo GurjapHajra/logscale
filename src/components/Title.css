@@ -1,0 +1,14 @@
+.Title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Title input{
+    font-size: 3rem;
+    border: 0px;
+    border-bottom: 0.25rem solid var(--color-primary);
+    text-align: center;
+    color: var(--color-primary);
+    width: 80%;
+}

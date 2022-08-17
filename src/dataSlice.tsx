@@ -3,10 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface dataState {
   arrays: any;
+  title: string;
 }
 
 const initialState: dataState = {
   arrays: [],
+  title:""
 }
 
 export const dataSlice = createSlice({
@@ -29,10 +31,13 @@ export const dataSlice = createSlice({
     change: (state, action: PayloadAction<object>) => {
       state.arrays = action.payload;
     },
+    change_title: (state, action: PayloadAction<string>) => {
+      state.title = action.payload;
+    },
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { add_object,delete_object,reset,change } = dataSlice.actions
+export const { add_object,delete_object,reset,change, change_title } = dataSlice.actions
 
 export default dataSlice.reducer
