@@ -1,0 +1,28 @@
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 1;
+    background-color: var(--color-primary);
+    border: 1px solid white;
+}
+
+.modal_content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+p{
+    cursor: default;
+}
+
+.modal_content button{
+    margin: 0.5rem;
+}
+
+.close:hover{
+    cursor: pointer;
+}
