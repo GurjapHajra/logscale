@@ -8,7 +8,7 @@ import type { RootState } from '../store'
 import { useSelector } from 'react-redux'
 import axios from 'axios'
 
-//id for testing: 62e2fc91b750ecb5e80a1418
+//id for testing: 62fc552bb93fc266ad33591e
 
 const PopUp = (props: any) => {
 
@@ -23,6 +23,7 @@ const PopUp = (props: any) => {
   const [savedID, setSavedID] = useState("");
   const [posted,setposted] = useState(false);
   const[isloading,setloading] = useState(false);
+  const[iserror,seterror] = useState(false);
   
   //load to a server
 
@@ -30,31 +31,39 @@ const PopUp = (props: any) => {
     const res = await fetch(`https://log-scale-api.herokuapp.com/LogScale/${id}`);
     return res.json();
   }
-  const {data, status, refetch} = useQuery(["characters",id],fetcharays,{
+  const {data, status} = useQuery(["characters",id],fetcharays,{
     enabled: props.mode === "load"
   })
+  if (status === "loading"){
+    if(isloading == false)
+      setloading(true);
+    if(iserror == true)
+      seterror(false);
+  }
+  if(status === 'error'){
+    if(isloading == true)
+      setloading(false);
+    if(iserror == false)
+      seterror(true);
+    console.error(data);
+  }
+  if(status === 'success'){
+    if(isloading == true)
+      setloading(false);
+    if(iserror == true)
+      seterror(false);
+    console.log(data[0])
+
+    arraysToObject(data[0]["names"],data[0]["values"],data[0]["links"])
+
+    dispatch(change(arraysToObject(data[0]["names"],data[0]["values"],data[0]["links"])))
+    dispatch(change_title(data[0]["title"]))
+    props.clickHandle();
+  }
 
   if(props.mode === "load"){
 
     const handleLoad = () => {
-      refetch();
-      if (status === "loading"){
-        setloading(true);
-      }
-      if(status === 'error'){
-        setloading(false);
-        console.error(data);
-      }
-      if(status === 'success'){
-        setloading(false);
-        console.log(data[0])
-  
-        arraysToObject(data[0]["names"],data[0]["values"],data[0]["links"])
-  
-        dispatch(change(arraysToObject(data[0]["names"],data[0]["values"],data[0]["links"])))
-        dispatch(change_title(data[0]["title"]))
-        props.clickHandle();
-      }
     }
 
     return (
@@ -63,8 +72,8 @@ const PopUp = (props: any) => {
         <div className="modal_content">
           <p>ID:</p>
           <input value={id} onChange={e => setid(e.target.value)}/>
-          <button onClick={handleLoad}>Load</button>
           {isloading && <span>loading...</span>}
+          {iserror && <span>Not Found</span>}
       </div>
      </div>
     )
