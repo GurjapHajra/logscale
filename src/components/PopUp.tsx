@@ -28,7 +28,7 @@ const PopUp = (props: any) => {
   //load to a server
 
   async function fetcharays(){
-    const res = await fetch(`https://log-scale-api.herokuapp.com/LogScale/${id}`);
+    const res = await fetch(`https://personal-api-cjzx.onrender.com/LogScale/${id}`);
     return res.json();
   }
   const {data, status} = useQuery(["characters",id],fetcharays,{
@@ -88,7 +88,7 @@ const PopUp = (props: any) => {
     const send = objectToArray(data)
 
     if(!posted){
-      axios.post("https://log-scale-api.herokuapp.com/LogScale",{
+      axios.post("https://personal-api-cjzx.onrender.com/LogScale",{
         "title": savedtitle,
         "names": send[0],
         "values": send[1],
